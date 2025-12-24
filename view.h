@@ -17,7 +17,7 @@ class View {
   // points to memory range [data, data + length - 1]. If `direction` is
   // reverse, then points to memory range [data - lenght + 1, data], and
   // reverses the substring stored in that range.
-  View(value_type* data, size_type length,
+  View(const value_type* data, size_type length,
        Direction direction = Direction::kForward)
       : data_(data), length_(length), direction_(direction) {}
 
@@ -29,12 +29,17 @@ class View {
 
   class iterator {
    public:
-    iterator(View& view, size_type index) : view_(view), index_(index) {}
+    iterator(const View& view, size_type index) : view_(view), index_(index) {}
+
     void operator++() { index_++; }
     value_type operator*() const { return view_[index_]; }
+    bool operator==(const iterator& other) const {
+      return &view_ == &other.view_ && index_ == other.index_;
+    }
+    bool operator!=(const iterator& other) const { return !operator==(other); }
 
    private:
-    View& view_;
+    const View& view_;
     size_type index_;
   };
 
@@ -46,8 +51,16 @@ class View {
     return *(data_ + static_cast<int>(direction_) * index);
   }
 
-  iterator begin() { return iterator(*this, 0); }
-  iterator end() { return iterator(*this, length_); }
+  iterator begin() const { return iterator(*this, 0); }
+  iterator end() const { return iterator(*this, length_); }
+
+  bool operator==(const View& other) const {
+    return length_ == other.length_ &&
+           std::equal(begin(), end(), other.begin(),
+                      [](value_type a, value_type b) { return a == b; });
+  }
+
+  bool operator==(std::string_view other) const { return *this == View(other); }
 
  private:
   const value_type* const data_;

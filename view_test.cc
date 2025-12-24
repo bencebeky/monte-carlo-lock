@@ -134,3 +134,73 @@ TEST(View, Iterator) {
     EXPECT_EQ(v.end(), it);
   }
 }
+
+TEST(View, Equals) {
+  {
+    View v1, v2;
+    EXPECT_EQ(v1, v2);
+  }
+
+  {
+    string s("foo");
+    View v1, v2(s.data(), 0);
+    EXPECT_EQ(v1, v2);
+  }
+
+  {
+    View v1("foo"), v2("foo");
+    EXPECT_EQ(v1, v2);
+  }
+
+  {
+    std::string s1("foo"), s2("foo");
+    View v1(s1), v2(s2);
+    EXPECT_EQ(v1, v2);
+  }
+
+  {
+    std::string s("foo");
+    View v1(s), v2(s);
+    EXPECT_EQ(v1, v2);
+  }
+
+  {
+    std::string s("foo");
+    View v1(s), v2("foo");
+    EXPECT_EQ(v1, v2);
+  }
+
+  {
+    View v1("foo"), v2("bar");
+    EXPECT_FALSE(v1 == v2);
+  }
+
+  {
+    std::string s1("foo"), s2("bar");
+    View v1(s1), v2(s2);
+    EXPECT_FALSE(v1 == v2);
+  }
+
+  {
+    std::string s("foo");
+    View v1(s), v2("bar");
+    EXPECT_FALSE(v1 == v2);
+  }
+
+  {
+    View v("foo");
+    EXPECT_EQ(v, "foo");
+    EXPECT_FALSE(v == "bar");
+  }
+
+  {
+    View v1, v2("foo");
+    EXPECT_FALSE(v1 == v2);
+  }
+
+  {
+    std::string s("foo");
+    View v1, v2(s);
+    EXPECT_FALSE(v1 == v2);
+  }
+}
