@@ -1,4 +1,5 @@
 #include <string>
+#include <string_view>
 
 // View of a substring of an externally stored string, much like
 // std::string_view, but also supports reverse substrings.
@@ -15,10 +16,15 @@ class View {
   View(char* data, size_t length, Direction direction = Direction::kForward)
       : data_(data), length_(length), direction_(direction) {}
 
+  // This allows conversion from std::string and C-style string (including
+  // string literals) as well, courtesy of std::string_view's implicit
+  // constructors.
+  View(std::string_view s) : data_(s.data()), length_(s.length()), direction_(Direction::kForward) {}
+
   bool empty() const { return length_ == 0; }
 
  private:
-  char* const data_;
+  const char* const data_;
   const size_t length_;
   const Direction direction_;
 };
