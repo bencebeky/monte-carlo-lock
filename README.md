@@ -24,9 +24,10 @@ itself, then it opens the lock. Note that there might be other combinations that
 open the lock, but it cannot be proven for any combination other than those
 that are specially related to themselves based on the information above.
 
-The original task is to find any combination that opens the lock. This
-repository contains code to find all combinations that are specially related to
-themselves up to a fixed length.
+The original task is to find any combination that we know opens the lock, that
+is, one that is specially related to itself. This repository contains code to
+find all combinations that are specially related to themselves up to a fixed
+length.
 
 The characters `Q`, `L`, `V`, and `R` have special meaning.  The original
 problem allows any uppercase letter of the English alphabet. To keep the
@@ -34,3 +35,27 @@ branching factor low, we only allow the letter `X` in addition to the special
 ones above, but this could be any character. If a solution contains multiple
 occurrences of `X`, then it has to be investigated separately which ones have to
 be identical characters, which is beyond the scope of the current work.
+
+## Recursive approach
+
+The first implementation, in [recursive.cc](recursive.cc), goes through all
+possible strings, and checks each whether it is specially related to itself. The
+main loop keeps a `std::string` object, but in order to avoid copying, the
+recursive calls pass around a `View`, which is a class much like
+`std::string_view` except it also supports reversed strings.
+
+## Recursive approach with memoization
+
+The second implementation, [memoize.cc](memoize.cc), uses the same recursive
+approach, except every time it is determined about a pair a combinations whether
+the first one is specially related to the second one, this information is saved
+in a map.
+
+## Ground-up approach
+
+The third implementation, [construct.cc](construct.cc), builds up a set of
+all pairs of combinations that are specially related up to the length limit.
+
+## Comparison of the tree approaches
+
+TODO runtime, memory usage
