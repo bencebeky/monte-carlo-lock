@@ -15,6 +15,8 @@ class View {
   View(char* data, size_t length, Direction direction = Direction::kForward)
       : data_(data), length_(length), direction_(direction) {}
 
+  bool empty() const { return length_ == 0; }
+
  private:
   char* const data_;
   const size_t length_;
