@@ -59,3 +59,19 @@ all pairs of combinations that are specially related up to the length limit.
 ## Comparison of the tree approaches
 
 TODO runtime, memory usage
+
+## Alternatives for View
+
+View is a reimplementation of the base functionality of `std::string_view` plus
+support for reversing string order.
+
+Another approach would be to make use of `std::string_view::reverse_iterator`.
+For example, a base class could be provided as an interface, with a templated
+derived class that saves `begin()` and `end()` (and possibly caches length so as
+not having to call `std::distance` every time) and implements the virtual
+methods of the base class. Then the derived class could be instantiated once
+with `std::string_view::iterator` and once with
+`std::string_view::reverse_iterator` as template argument.
+
+`operator==()` between two different types would still need to be implemented
+explicitly.
