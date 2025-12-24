@@ -27,3 +27,10 @@ that are specially related to themselves based on the information above.
 The original task is to find any combination that opens the lock. This
 repository contains code to find all combinations that are specially related to
 themselves up to a fixed length.
+
+The characters `Q`, `L`, `V`, and `R` have special meaning.  The original
+problem allows any uppercase letter of the English alphabet. To keep the
+branching factor low, we only allow the letter `X` in addition to the special
+ones above, but this could be any character. If a solution contains multiple
+occurrences of `X`, then it has to be investigated separately which ones have to
+be identical characters, which is beyond the scope of the current work.
