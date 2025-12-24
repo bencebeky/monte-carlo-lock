@@ -13,8 +13,17 @@ cc_test(
     ],
 )
 
+cc_library(
+    name = "combination",
+    hdrs = ["combination.h"],
+    visibility = ["//visibility:public"],
+)
+
 cc_binary(
     name = "recursive",
     srcs = ["recursive.cc"],
-    deps = ["view"],
+    deps = [
+        "combination",
+        "view",
+    ],
 )

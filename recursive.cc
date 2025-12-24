@@ -9,40 +9,11 @@
   then `Rx` is specially related to `yy` (the repeat of `y`).
   */
 
+#include "combination.h"
 #include "view.h"
 
-#include <algorithm>
-#include <array>
 #include <iostream>
-
-using alphabet_type = std::array<char, 5>;
-alphabet_type kAlphabet{'Q', 'L', 'V', 'R', 'X'};
-
-std::string first_combination(int length) {
-  return std::string(length, kAlphabet[0]);
-}
-
-bool next_combination(std::string& combination) {
-  std::string::reverse_iterator it = combination.rbegin();
-
-  while (true) {
-    if (it == combination.rend()) {
-      return false;
-    }
-
-    alphabet_type::iterator letter =
-        std::find(kAlphabet.begin(), kAlphabet.end(), *it);
-    letter++;
-
-    if (letter != kAlphabet.end()) {
-      *it = *letter;
-      return true;
-    }
-
-    *it = *kAlphabet.begin();
-    it++;
-  }
-}
+#include <string>
 
 int main() {
   const int kMaxLength = 2;
