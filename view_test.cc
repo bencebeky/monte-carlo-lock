@@ -1,6 +1,8 @@
 #include "view.h"
 
-#include <gtest/gtest.h>
+#include <algorithm>
+
+#include "gtest/gtest.h"
 
 TEST(View, Empty) {
   {
