@@ -256,3 +256,20 @@ TEST(View, Substr) {
     EXPECT_EQ(v, v.substr(3, 3));
   }
 }
+
+TEST(View, ToString) {
+  {
+    std::string s = View().ToString();
+    EXPECT_TRUE(s.empty());
+  }
+
+  {
+    std::string s = View("foo").ToString();
+    EXPECT_EQ("foo", s);
+  }
+
+  {
+    std::string s = View("foo").reverse().ToString();
+    EXPECT_EQ("oof", s);
+  }
+}

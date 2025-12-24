@@ -78,6 +78,15 @@ class View {
                 direction_);
   }
 
+  std::string ToString() const {
+    std::string result;
+    result.reserve(length_);
+    for (char c : *this) {
+      result.push_back(c);
+    }
+    return result;
+  }
+
  private:
   const value_type* const data_;
   const size_type length_;
