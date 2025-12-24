@@ -6,6 +6,8 @@ class View {
  public:
   enum class Direction { kForward, kReverse };
 
+  View() : data_(nullptr), length_(0), direction_(Direction::kForward) {}
+
   // `data` points to the first element. If `direction` is forward, then View
   // points to memory range [data, data + length - 1]. If `direction` is
   // reverse, then points to memory range [data - lenght + 1, data], and
