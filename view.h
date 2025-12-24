@@ -31,6 +31,10 @@ class View {
 
   size_type length() const { return length_; }
 
+  value_type operator[](size_type index) const {
+    return *(data_ + static_cast<int>(direction_) * index);
+  }
+
  private:
   const value_type* const data_;
   const size_type length_;
