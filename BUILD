@@ -19,11 +19,19 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "related",
+    hdrs = ["related.h"],
+    visibility = ["//visibility:public"],
+    deps = ["view"],
+)
+
 cc_binary(
     name = "recursive",
     srcs = ["recursive.cc"],
     deps = [
         "combination",
+        "related",
         "view",
     ],
 )
