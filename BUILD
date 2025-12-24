@@ -7,5 +7,8 @@ cc_library(
 cc_test(
     name = "view_test",
     srcs = ["view_test.cc"],
-    deps = ["view"],
+    deps = [
+        "view",
+        "@com_google_googletest//:gtest_main",
+    ],
 )
