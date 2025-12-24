@@ -84,3 +84,51 @@ TEST(View, Element) {
     EXPECT_EQ('r', v[2]);
   }
 }
+
+TEST(View, Iterator) {
+  {
+    View v;
+    EXPECT_EQ(v.begin(), v.end());
+  }
+
+  {
+    View v("foo");
+    View::iterator it = v.begin();
+    ASSERT_EQ(3, std::distance(it, v.end());
+
+    EXPECT_NE(v.end(), it);
+    EXPECT_EQ('f', *it);
+
+    it++;
+    EXPECT_NE(v.end(), it);
+    EXPECT_EQ('o', *it);
+
+    it++;
+    EXPECT_NE(v.end(), it);
+    EXPECT_EQ('o', *it);
+
+    it++;
+    EXPECT_EQ(v.end(), it);
+  }
+
+  {
+    std::string s("bar");
+    View v(s.data(), s.length(), View::Direction::kReverse);
+    View::iterator it = v.begin();
+    ASSERT_EQ(3, std::distance(it, v.end());
+
+    EXPECT_NE(v.end(), it);
+    EXPECT_EQ('b', *it);
+
+    it++;
+    EXPECT_NE(v.end(), it);
+    EXPECT_EQ('a', *it);
+
+    it++;
+    EXPECT_NE(v.end(), it);
+    EXPECT_EQ('r', *it);
+
+    it++;
+    EXPECT_EQ(v.end(), it);
+  }
+}

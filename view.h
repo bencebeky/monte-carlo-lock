@@ -27,6 +27,17 @@ class View {
   View(std::string_view s)
       : data_(s.data()), length_(s.length()), direction_(Direction::kForward) {}
 
+  class iterator {
+   public:
+    iterator(View& view, size_type index) : view_(view), index_(index) {}
+    void operator++() { index_++; }
+    value_type operator*() const { return view_[index_]; }
+
+   private:
+    View& view_;
+    size_type index_;
+  };
+
   bool empty() const { return length_ == 0; }
 
   size_type length() const { return length_; }
@@ -34,6 +45,9 @@ class View {
   value_type operator[](size_type index) const {
     return *(data_ + static_cast<int>(direction_) * index);
   }
+
+  iterator begin() { return iterator(*this, 0); }
+  iterator end() { return iterator(*this, length_); }
 
  private:
   const value_type* const data_;
