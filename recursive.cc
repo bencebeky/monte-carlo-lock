@@ -11,14 +11,47 @@
 
 #include "view.h"
 
+#include <algorithm>
+#include <array>
 #include <iostream>
 
-int main() {
-  const int kMaxLength = 12;
+using alphabet_type = std::array<char, 5>;
+alphabet_type kAlphabet{'Q', 'L', 'V', 'R', 'X'};
 
-  for (int length = 1; length < kMaxLength; length++) {
-    std::string key(length, 'a');
-    std::cout << key << std::endl;
+std::string first_combination(int length) {
+  return std::string(length, kAlphabet[0]);
+}
+
+bool next_combination(std::string& combination) {
+  std::string::reverse_iterator it = combination.rbegin();
+
+  while (true) {
+    if (it == combination.rend()) {
+      return false;
+    }
+
+    alphabet_type::iterator letter =
+        std::find(kAlphabet.begin(), kAlphabet.end(), *it);
+    letter++;
+
+    if (letter != kAlphabet.end()) {
+      *it = *letter;
+      return true;
+    }
+
+    *it = *kAlphabet.begin();
+    it++;
+  }
+}
+
+int main() {
+  const int kMaxLength = 2;
+
+  for (int length = 1; length <= kMaxLength; length++) {
+    std::string combination = first_combination(length);
+    do {
+      std::cout << combination << std::endl;
+    } while (next_combination(combination));
   }
 
   return 0;
