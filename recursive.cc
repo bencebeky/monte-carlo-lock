@@ -5,41 +5,28 @@
 #include <string>
 
 bool Q_related(View first, View second) {
-  if (first.length() != second.length() + 2) {
-    return false;
-  }
-
-  if (first[0] != 'Q' || first[first.length() - 1] != 'Q') {
-    return false;
-  }
-
-  return first.substr(1, first.length() - 2) == second;
+  return first.length() == second.length() + 2 && first[0] == 'Q' &&
+         first[first.length() - 1] == 'Q' &&
+         first.substr(1, first.length() - 2) == second;
 }
 
 bool L_related(View first, View second) {
-  if (first.empty() || first[0] != 'L' || second.empty() || second[0] != 'Q') {
-    return false;
-  }
-
-  return related(first.substr(1, first.length() - 1), second.substr(1, second.length() - 1);
+  return !first.empty() && first[0] == 'L' && !second.empty() &&
+         second[0] == 'Q' &&
+         related(first.substr(1, first.length() - 1),
+                 second.substr(1, second.length() - 1));
 }
 
 bool V_related(View first, View second) {
-  if (first.empty() || first[0] != V) {
-    return false;
-  }
-
-  return related(first.substr(1, first.length() - 1), second.reverse());
+  return !first.empty() && first[0] == 'V' &&
+         related(first.substr(1, first.length() - 1), second.reverse());
 }
 
 bool R_related(View first, View second) {
-  if (first.empty() || first[0] != 'R' || second.length % 2 != 0) {
-    return false;
-  }
+  const int half_length = second.length() / 2;
 
-  const int half_length = second.length / 2;
-
-  return second.substr(0, half_length) ==
+  return !first.empty() && first[0] == 'R' && second.length() % 2 == 0 &&
+         second.substr(0, half_length) ==
              second.substr(half_length, half_length) &&
          related(first.substr(1, first.length() - 1),
                  second.substr(0, half_length));
