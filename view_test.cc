@@ -204,3 +204,28 @@ TEST(View, Equals) {
     EXPECT_FALSE(v1 == v2);
   }
 }
+
+TEST(View, Reverse) {
+  {
+    View v;
+    EXPECT_TRUE(v.reverse().empty());
+  }
+
+  {
+    View v("oo");
+    EXPECT_EQ(v, v.reverse());
+  }
+
+  {
+    View v("foo");
+    EXPECT_FALSE(v == v.reverse());
+    EXPECT_EQ("oof", v.reverse());
+    EXPECT_EQ(v.reverse(), v.reverse());
+    EXPECT_EQ(v, v.reverse().reverse());
+  }
+
+  {
+    View v1("bar"), v2("bar");
+    EXPECT_EQ(v1.reverse(), v2.reverse());
+  }
+}

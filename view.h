@@ -54,6 +54,15 @@ class View {
   iterator begin() const { return iterator(*this, 0); }
   iterator end() const { return iterator(*this, length_); }
 
+  View reverse() const {
+    if (empty()) {
+      return View();
+    }
+
+    return View(data_ + static_cast<int>(direction_) * (length_ - 1), length_,
+                static_cast<Direction>((-1) * static_cast<int>(direction_)));
+  }
+
   bool operator==(const View& other) const {
     return length_ == other.length_ &&
            std::equal(begin(), end(), other.begin(),
