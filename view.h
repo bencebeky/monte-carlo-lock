@@ -6,8 +6,8 @@
 class View {
  public:
   // A signed size_type allows for seemless signed arithmetics.
-  using size_type int;
-  using value_type char;
+  using size_type = int;
+  using value_type = char;
 
   enum class Direction { kForward = 1, kReverse = -1 };
 
