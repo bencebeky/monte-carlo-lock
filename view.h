@@ -71,6 +71,11 @@ class View {
 
   bool operator==(std::string_view other) const { return *this == View(other); }
 
+  View substr(size_type start, size_type length) {
+    return View(data_ + static_cast<int>(direction_) * start, length,
+                direction_);
+  }
+
  private:
   const value_type* const data_;
   const size_type length_;

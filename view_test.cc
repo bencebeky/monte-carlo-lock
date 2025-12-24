@@ -229,3 +229,30 @@ TEST(View, Reverse) {
     EXPECT_EQ(v1.reverse(), v2.reverse());
   }
 }
+
+TEST(View, Substr) {
+  {
+    View v;
+    EXPECT_TRUE(v.substr(0, 0).empty());
+  }
+
+  {
+    View v("foobar");
+    EXPECT_TRUE(v.substr(0, 0).empty());
+    EXPECT_TRUE(v.substr(2, 0).empty());
+    EXPECT_TRUE(v.substr(5, 0).empty());
+
+    EXPECT_EQ("f", v.substr(0, 1));
+    EXPECT_EQ("o", v.substr(1, 1));
+    EXPECT_EQ("o", v.substr(2, 1));
+    EXPECT_EQ("b", v.substr(3, 1));
+    EXPECT_EQ("a", v.substr(4, 1));
+    EXPECT_EQ("r", v.substr(5, 1));
+
+    EXPECT_EQ("foo", v.substr(0, 3));
+    EXPECT_EQ("bar", v.substr(3, 3));
+
+    EXPECT_EQ("foobar", v.substr(3, 3));
+    EXPECT_EQ(v, v.substr(3, 3));
+  }
+}
