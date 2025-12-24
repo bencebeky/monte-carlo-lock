@@ -12,3 +12,9 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
+cc_binary(
+    name = "recursive",
+    srcs = ["recursive.cc"],
+    deps = ["view"],
+)
