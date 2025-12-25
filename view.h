@@ -103,3 +103,17 @@ class View {
   const size_type length_;
   const Direction direction_;
 };
+
+bool operator==(std::string_view first, View second) { return second == first; }
+
+namespace std {
+template <> struct iterator_traits<View::iterator> {
+  using iterator_category = std::forward_iterator_tag;
+  using value_type = char;
+  using difference_type = std::ptrdiff_t;
+};
+} // namespace std
+
+static_assert(
+    std::is_same<std::iterator_traits<View::iterator>::difference_type,
+                 std::ptrdiff_t>::value);
