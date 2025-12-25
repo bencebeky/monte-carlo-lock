@@ -36,3 +36,13 @@ cc_binary(
         "view",
     ],
 )
+
+cc_binary(
+    name = "memoize",
+    srcs = ["memoize.cc"],
+    deps = [
+        "combination",
+        "related",
+        "view",
+    ],
+)
