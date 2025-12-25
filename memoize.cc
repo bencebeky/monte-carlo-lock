@@ -9,13 +9,15 @@
 
 class RelationshipCache {
  public:
+  using CombinationPair = std::pair<std::string, std::string>;
+  using SetOfPairs = std::set<CombinationPair>;
+
   bool related(View first, View second) {
     const related_type bound_related =
         std::bind(&RelationshipCache::related, this, std::placeholders::_1,
                   std::placeholders::_2);
 
-    std::pair<std::string, std::string> pair(first.ToString(),
-                                             second.ToString());
+    CombinationPair pair(first.ToString(), second.ToString());
 
     if (related_cache_.find(pair) != related_cache_.end()) {
       return true;
@@ -40,8 +42,8 @@ class RelationshipCache {
   }
 
  private:
-  std::set<std::pair<std::string, std::string>> related_cache_;
-  std::set<std::pair<std::string, std::string>> not_related_cache_;
+  SetOfPairs related_cache_;
+  SetOfPairs not_related_cache_;
 };
 
 int main() {
