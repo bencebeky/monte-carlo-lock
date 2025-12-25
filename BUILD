@@ -1,7 +1,8 @@
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "view",
     hdrs = ["view.h"],
-    visibility = ["//visibility:public"],
 )
 
 cc_test(
@@ -17,13 +18,11 @@ cc_library(
     name = "combination",
     srcs = ["combination.cc"],
     hdrs = ["combination.h"],
-    visibility = ["//visibility:public"],
 )
 
 cc_library(
     name = "related",
     hdrs = ["related.h"],
-    visibility = ["//visibility:public"],
     deps = ["view"],
 )
 
