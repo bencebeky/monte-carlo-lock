@@ -3,12 +3,36 @@
 #include "view.h"
 
 #include <iostream>
+#include <set>
 #include <string>
 
+// TODO Look up how to partially bind class instance to method and package
+// these in a class.
+std::set<std::pair<std::string, std::string>> related_cache;
+std::set<std::pair<std::string, std::string>> not_related_cache;
+
 bool related(View first, View second) {
-  return Q_related(first, second, related) ||
-         L_related(first, second, related) ||
-         V_related(first, second, related) || R_related(first, second, related);
+  std::pair<std::string, std::string> pair(first.ToString(), second.ToString());
+
+  if (related_cache.find(pair) != related_cache.end()) {
+    return true;
+  }
+
+  if (not_related_cache.find(pair) != not_related_cache.end()) {
+    return false;
+  }
+
+  const bool is_related =
+      Q_related(first, second, related) || L_related(first, second, related) ||
+      V_related(first, second, related) || R_related(first, second, related);
+
+  if (is_related) {
+    related_cache.insert(pair);
+  } else {
+    not_related_cache.insert(pair);
+  }
+
+  return is_related;
 }
 
 int main() {
