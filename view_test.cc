@@ -80,10 +80,10 @@ TEST(View, Element) {
 
   {
     std::string s("bar");
-    View v(s.data(), s.length(), View::Direction::kReverse);
-    EXPECT_EQ('b', v[0]);
+    View v(s.data() + s.length() - 1, s.length(), View::Direction::kReverse);
+    EXPECT_EQ('r', v[0]);
     EXPECT_EQ('a', v[1]);
-    EXPECT_EQ('r', v[2]);
+    EXPECT_EQ('b', v[2]);
   }
 }
 
@@ -96,7 +96,7 @@ TEST(View, Iterator) {
   {
     View v("foo");
     View::iterator it = v.begin();
-    ASSERT_EQ(3, std::distance(it, v.end());
+    ASSERT_EQ(3, std::distance(it, v.end()));
 
     EXPECT_NE(v.end(), it);
     EXPECT_EQ('f', *it);
@@ -115,12 +115,12 @@ TEST(View, Iterator) {
 
   {
     std::string s("bar");
-    View v(s.data(), s.length(), View::Direction::kReverse);
+    View v(s.data() + s.length() - 1, s.length(), View::Direction::kReverse);
     View::iterator it = v.begin();
-    ASSERT_EQ(3, std::distance(it, v.end());
+    ASSERT_EQ(3, std::distance(it, v.end()));
 
     EXPECT_NE(v.end(), it);
-    EXPECT_EQ('b', *it);
+    EXPECT_EQ('r', *it);
 
     it++;
     EXPECT_NE(v.end(), it);
@@ -128,7 +128,7 @@ TEST(View, Iterator) {
 
     it++;
     EXPECT_NE(v.end(), it);
-    EXPECT_EQ('r', *it);
+    EXPECT_EQ('b', *it);
 
     it++;
     EXPECT_EQ(v.end(), it);
@@ -142,7 +142,7 @@ TEST(View, Equals) {
   }
 
   {
-    string s("foo");
+    std::string s("foo");
     View v1, v2(s.data(), 0);
     EXPECT_EQ(v1, v2);
   }
@@ -252,8 +252,8 @@ TEST(View, Substr) {
     EXPECT_EQ("foo", v.substr(0, 3));
     EXPECT_EQ("bar", v.substr(3, 3));
 
-    EXPECT_EQ("foobar", v.substr(3, 3));
-    EXPECT_EQ(v, v.substr(3, 3));
+    EXPECT_EQ("foobar", v.substr(0, 6));
+    EXPECT_EQ(v, v.substr(0, 6));
   }
 }
 
