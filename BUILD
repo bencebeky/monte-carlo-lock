@@ -15,6 +15,7 @@ cc_test(
 
 cc_library(
     name = "combination",
+    srcs = ["combination.cc"],
     hdrs = ["combination.h"],
     visibility = ["//visibility:public"],
 )
