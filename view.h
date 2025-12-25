@@ -33,7 +33,18 @@ class View {
    public:
     iterator(const View& view, size_type index) : view_(view), index_(index) {}
 
-    void operator++() { index_++; }
+    // ++it
+    iterator& operator++() {
+      index_++;
+      return *this;
+    }
+    // it++
+    iterator operator++(int) {
+      iterator temp = *this;
+      index_++;
+      return temp;
+    }
+
     value_type operator*() const { return view_[index_]; }
     bool operator==(const iterator& other) const {
       return &view_ == &other.view_ && index_ == other.index_;
