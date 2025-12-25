@@ -46,3 +46,12 @@ cc_binary(
         "view",
     ],
 )
+
+cc_binary(
+    name = "construct",
+    srcs = ["construct.cc"],
+    deps = [
+        "combination",
+        "view",
+    ],
+)
