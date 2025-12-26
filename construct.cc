@@ -6,6 +6,8 @@
 #include <string>
 #include <utility>
 
+#include "absl/strings/str_cat.h"
+
 class RelationshipCacheWithQueue {
  public:
   using CombinationPair = std::pair<std::string, std::string>;
@@ -49,11 +51,7 @@ int main() {
   for (int length = 1; length <= kMaxLength - 2; length++) {
     std::string combination = first_combination(length);
     do {
-      std::string q;
-      q.push_back('Q');
-      q.append(combination);
-      q.push_back('Q');
-      r.Insert({combination, q});
+      r.Insert({combination, absl::StrCat("Q", combination, "Q")});
     } while (next_combination(combination));
   }
 
@@ -67,31 +65,22 @@ int main() {
     }
 
     // V property
-    std::string v("V");
-    v.append(first);
-    r.Insert({v, second});
+    // TODO reverse `second`
+    r.Insert({absl::StrCat("V", first), second});
 
     if (second.length() == kMaxLength) {
       continue;
     }
 
     // L property
-    std::string l_first("L");
-    l_first.append(first);
-    std::string l_second("Q");
-    l_second.append(second);
-    r.Insert({l_first, l_second});
+    r.Insert({absl::StrCat("L", first), absl::StrCat("Q", second)});
 
     if (2 * second.length() > kMaxLength) {
       continue;
     }
 
     // R property
-    std::string r_first("R");
-    r_first.append(first);
-    std::string r_second(second);
-    r_second.append(second);
-    r.Insert({r_first, r_second});
+    r.Insert({absl::StrCat("R", first), absl::StrCat(second, second)});
   }
 
   const std::set<RelationshipCacheWithQueue::CombinationPair>& related_pairs =
