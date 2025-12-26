@@ -60,7 +60,7 @@ int main() {
     const std::string& first = pair.first;
     const std::string& second = pair.second;
 
-    if (first.length() == kMaxLength) {
+    if (first.length() + 1 > kMaxLength) {
       continue;
     }
 
@@ -68,19 +68,15 @@ int main() {
     std::string second_reversed{second.rbegin(), second.rend()};
     r.Insert({absl::StrCat("V", first), second_reversed});
 
-    if (second.length() == kMaxLength) {
-      continue;
+    if (second.length() + 1 <= kMaxLength) {
+      // L property
+      r.Insert({absl::StrCat("L", first), absl::StrCat("Q", second)});
     }
 
-    // L property
-    r.Insert({absl::StrCat("L", first), absl::StrCat("Q", second)});
-
-    if (2 * second.length() > kMaxLength) {
-      continue;
+    if (2 * second.length() <= kMaxLength) {
+      // R property
+      r.Insert({absl::StrCat("R", first), absl::StrCat(second, second)});
     }
-
-    // R property
-    r.Insert({absl::StrCat("R", first), absl::StrCat(second, second)});
   }
 
   const std::set<RelationshipCacheWithQueue::CombinationPair>& related_pairs =
