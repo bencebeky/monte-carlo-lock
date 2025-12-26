@@ -65,8 +65,8 @@ int main() {
     }
 
     // V property
-    // TODO reverse `second`
-    r.Insert({absl::StrCat("V", first), second});
+    std::string second_reversed{second.rbegin(), second.rend()};
+    r.Insert({absl::StrCat("V", first), second_reversed});
 
     if (second.length() == kMaxLength) {
       continue;
