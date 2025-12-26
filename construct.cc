@@ -44,7 +44,7 @@ class RelationshipCacheWithQueue {
 };
 
 int main() {
-  const int kMaxLength = 10;
+  constexpr int kMaxLength = 10;
   RelationshipCacheWithQueue r;
 
   // Seed known related pairs using Q property

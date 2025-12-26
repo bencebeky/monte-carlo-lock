@@ -50,7 +50,7 @@ class RelationshipCache {
 };
 
 int main() {
-  const int kMaxLength = 10;
+  constexpr int kMaxLength = 10;
   RelationshipCache r;
 
   for (int length = 1; length <= kMaxLength; length++) {
