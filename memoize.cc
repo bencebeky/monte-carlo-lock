@@ -36,9 +36,9 @@ class RelationshipCache {
                             R_related(first, second, bound_related);
 
     if (is_related) {
-      related_cache_.insert(related_it, pair);
+      related_cache_.insert(related_it, std::move(pair));
     } else {
-      not_related_cache_.insert(not_related_it, pair);
+      not_related_cache_.insert(not_related_it, std::move(pair));
     }
 
     return is_related;
