@@ -1,5 +1,8 @@
 #pragma once
 
+#include <algorithm>
+#include <cstddef>
+#include <iterator>
 #include <string>
 #include <string_view>
 
