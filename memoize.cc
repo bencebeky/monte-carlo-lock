@@ -19,11 +19,13 @@ class RelationshipCache {
 
     CombinationPair pair(first.ToString(), second.ToString());
 
-    if (related_cache_.find(pair) != related_cache_.end()) {
+    SetOfPairs::iterator related_it = related_cache_.lower_bound(pair);
+    if (related_it != related_cache_.end() && *related_it == pair) {
       return true;
     }
 
-    if (not_related_cache_.find(pair) != not_related_cache_.end()) {
+    SetOfPairs::iterator not_related_it = not_related_cache_.lower_bound(pair);
+    if (not_related_it != not_related_cache_.end() && *not_related_it == pair) {
       return false;
     }
 
@@ -33,9 +35,9 @@ class RelationshipCache {
                             R_related(first, second, bound_related);
 
     if (is_related) {
-      related_cache_.insert(pair);
+      related_cache_.insert(related_it, pair);
     } else {
-      not_related_cache_.insert(pair);
+      not_related_cache_.insert(not_related_it, pair);
     }
 
     return is_related;
