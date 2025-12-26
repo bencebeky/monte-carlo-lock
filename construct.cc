@@ -42,7 +42,7 @@ class RelationshipCacheWithQueue {
 };
 
 int main() {
-  const int kMaxLength = 4;
+  const int kMaxLength = 10;
   RelationshipCacheWithQueue r;
 
   // Seed known related pairs using Q property
@@ -58,14 +58,40 @@ int main() {
   }
 
   while (!r.DequeEmpty()) {
-    break;
-    // TODO
-    // L property
-    // x, y -> Lx, Qy
+    RelationshipCacheWithQueue::CombinationPair pair = r.Dequeue();
+    const std::string& first = pair.first;
+    const std::string& second = pair.second;
+
+    if (first.length() == kMaxLength) {
+      continue;
+    }
+
     // V property
-    // x, y -> Vx, y
+    std::string v("V");
+    v.append(first);
+    r.Insert({v, second});
+
+    if (second.length() == kMaxLength) {
+      continue;
+    }
+
+    // L property
+    std::string l_first("L");
+    l_first.append(first);
+    std::string l_second("Q");
+    l_second.append(second);
+    r.Insert({l_first, l_second});
+
+    if (2 * second.length() > kMaxLength) {
+      continue;
+    }
+
     // R property
-    // x, y -> Rx, yy
+    std::string r_first("R");
+    r_first.append(first);
+    std::string r_second(second);
+    r_second.append(second);
+    r.Insert({r_first, r_second});
   }
 
   const std::set<RelationshipCacheWithQueue::CombinationPair>& related_pairs =
