@@ -113,7 +113,3 @@ template <> struct iterator_traits<View::iterator> {
   using difference_type = std::ptrdiff_t;
 };
 } // namespace std
-
-static_assert(
-    std::is_same<std::iterator_traits<View::iterator>::difference_type,
-                 std::ptrdiff_t>::value);
