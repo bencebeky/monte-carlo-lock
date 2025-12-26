@@ -51,7 +51,7 @@ int main() {
   for (int length = 0; length <= kMaxLength - 2; length++) {
     std::string combination = first_combination(length);
     do {
-      r.Insert({combination, absl::StrCat("Q", combination, "Q")});
+      r.Insert({absl::StrCat("Q", combination, "Q"), combination});
     } while (next_combination(combination));
   }
 
