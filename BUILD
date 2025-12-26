@@ -49,8 +49,5 @@ cc_binary(
 cc_binary(
     name = "construct",
     srcs = ["construct.cc"],
-    deps = [
-        "combination",
-        "view",
-    ],
+    deps = ["combination"],
 )
