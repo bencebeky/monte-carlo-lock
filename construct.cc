@@ -20,7 +20,7 @@ class RelationshipCacheWithQueue {
     }
 
     related_cache_.insert(it, element);
-    related_deque_.push_back(element);
+    related_deque_.push_back(std::move(element));
   }
 
   CombinationPair Dequeue() {
