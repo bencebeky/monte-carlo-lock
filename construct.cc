@@ -48,7 +48,7 @@ int main() {
   RelationshipCacheWithQueue r;
 
   // Seed known related pairs using Q property
-  for (int length = 1; length <= kMaxLength - 2; length++) {
+  for (int length = 0; length <= kMaxLength - 2; length++) {
     std::string combination = first_combination(length);
     do {
       r.Insert({combination, absl::StrCat("Q", combination, "Q")});
