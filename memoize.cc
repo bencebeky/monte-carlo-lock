@@ -44,6 +44,9 @@ class RelationshipCache {
     return is_related;
   }
 
+  size_t related_cache_size() const { return related_cache_.size(); }
+  size_t not_related_cache_size() const { return not_related_cache_.size(); }
+
  private:
   SetOfPairs related_cache_;
   SetOfPairs not_related_cache_;
@@ -61,6 +64,10 @@ int main() {
       }
     } while (next_combination(combination));
   }
+
+  std::cout << "related_cache_size: " << r.related_cache_size() << std::endl;
+  std::cout << "not_related_cache_size: " << r.not_related_cache_size()
+            << std::endl;
 
   return 0;
 }

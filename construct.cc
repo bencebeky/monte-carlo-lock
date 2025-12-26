@@ -34,6 +34,8 @@ class RelationshipCacheWithQueue {
     return related_cache_;
   }
 
+  size_t related_cache_size() const { return related_cache_.size(); }
+
  private:
   // Pairs of combinations that are known to be specially related.
   std::set<CombinationPair> related_cache_;
@@ -87,6 +89,8 @@ int main() {
       std::cout << pair.first << std::endl;
     }
   }
+
+  std::cout << "related_cache_size: " << r.related_cache_size() << std::endl;
 
   return 0;
 }
