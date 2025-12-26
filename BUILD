@@ -49,5 +49,8 @@ cc_binary(
 cc_binary(
     name = "construct",
     srcs = ["construct.cc"],
-    deps = ["combination"],
+    deps = [
+        "combination",
+        "@abseil-cpp//absl/strings",
+    ],
 )
