@@ -14,11 +14,11 @@ class RelationshipCalculator {
 
   void Populate() {
     for (int length = 0; length <= kMaxLength_ - 2; length++) {
-      std::string second = first_combination(length);
+      CombinationPair pair{std::string(), first_combination(length)};
       do {
-        std::string first = absl::StrCat("Q", second, "Q");
-        Insert(first, second);
-      } while (next_combination(second));
+        pair.first = absl::StrCat("Q", pair.second, "Q");
+        Insert(pair);
+      } while (next_combination(pair.second));
     }
   }
 
@@ -26,15 +26,15 @@ class RelationshipCalculator {
 
  private:
   // Insert pair and every possible pair derived from it up to length limit.
-  void Insert(const std::string& first, const std::string& second) {
-    CombinationPair element(first, second);
-
-    std::set<CombinationPair>::iterator it = related_set_.lower_bound(element);
-    if (it != related_set_.end() && *it == element) {
+  void Insert(const CombinationPair& pair) {
+    std::set<CombinationPair>::iterator it = related_set_.lower_bound(pair);
+    if (it != related_set_.end() && *it == pair) {
       return;
     }
 
-    related_set_.insert(it, std::move(element));
+    related_set_.insert(it, pair);
+    const std::string& first = pair.first;
+    const std::string& second = pair.second;
 
     if (first.length() + 1 > kMaxLength_) {
       return;
@@ -42,16 +42,16 @@ class RelationshipCalculator {
 
     // V property
     std::string second_reversed{second.rbegin(), second.rend()};
-    Insert(absl::StrCat("V", first), second_reversed);
+    Insert({absl::StrCat("V", first), second_reversed});
 
     if (second.length() + 1 <= kMaxLength_) {
       // L property
-      Insert(absl::StrCat("L", first), absl::StrCat("Q", second));
+      Insert({absl::StrCat("L", first), absl::StrCat("Q", second)});
     }
 
     if (2 * second.length() <= kMaxLength_) {
       // R property
-      Insert(absl::StrCat("R", first), absl::StrCat(second, second));
+      Insert({absl::StrCat("R", first), absl::StrCat(second, second)});
     }
   }
 
