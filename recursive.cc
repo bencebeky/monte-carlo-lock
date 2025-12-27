@@ -12,7 +12,7 @@ bool related(View first, View second) {
 }
 
 int main() {
-  constexpr int kMaxLength = 10;
+  constexpr int kMaxLength = 11;
 
   for (int length = 1; length <= kMaxLength; length++) {
     std::string combination = first_combination(length);
