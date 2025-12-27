@@ -26,32 +26,39 @@ class RelationshipCalculator {
 
  private:
   // Insert pair and every possible pair derived from it up to length limit.
-  void Insert(const CombinationPair& pair) {
+  void Insert(CombinationPair pair) {
     std::set<CombinationPair>::iterator it = related_set_.lower_bound(pair);
     if (it != related_set_.end() && *it == pair) {
       return;
     }
 
-    related_set_.insert(it, pair);
-    const std::string& first = pair.first;
-    const std::string& second = pair.second;
-
-    if (first.length() + 1 > kMaxLength_) {
+    if (pair.first.length() + 1 > static_cast<size_t>(kMaxLength_)) {
+      related_set_.insert(it, std::move(pair));
       return;
     }
 
-    // V property
+    const std::string second = pair.second;
     std::string second_reversed{second.rbegin(), second.rend()};
-    Insert({absl::StrCat("V", first), second_reversed});
+    CombinationPair new_pair{absl::StrCat("V", pair.first),
+                             std::move(second_reversed)};
 
-    if (second.length() + 1 <= kMaxLength_) {
+    related_set_.insert(it, std::move(pair));
+
+    // V property
+    Insert(new_pair);
+
+    if (second.length() + 1 <= static_cast<size_t>(kMaxLength_)) {
       // L property
-      Insert({absl::StrCat("L", first), absl::StrCat("Q", second)});
+      new_pair.first[0] = 'L';
+      new_pair.second = absl::StrCat("Q", second);
+      Insert(new_pair);
     }
 
-    if (2 * second.length() <= kMaxLength_) {
+    if (2 * second.length() <= static_cast<size_t>(kMaxLength_)) {
       // R property
-      Insert({absl::StrCat("R", first), absl::StrCat(second, second)});
+      new_pair.first[0] = 'R';
+      new_pair.second = absl::StrCat(second, second);
+      Insert(std::move(new_pair));
     }
   }
 
