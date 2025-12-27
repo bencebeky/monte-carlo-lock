@@ -37,10 +37,7 @@ class RelationshipCache {
       return false;
     }
 
-    const bool is_related = Q_related(first, second, bound_related_) ||
-                            L_related(first, second, bound_related_) ||
-                            V_related(first, second, bound_related_) ||
-                            R_related(first, second, bound_related_);
+    const bool is_related = related_impl(first, second, bound_related_);
 
     if (is_related) {
       related_count_++;

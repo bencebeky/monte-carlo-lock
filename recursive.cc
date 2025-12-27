@@ -6,9 +6,7 @@
 #include <string>
 
 bool related(View first, View second) {
-  return Q_related(first, second, related) ||
-         L_related(first, second, related) ||
-         V_related(first, second, related) || R_related(first, second, related);
+  return related_impl(first, second, related);
 }
 
 int main() {
