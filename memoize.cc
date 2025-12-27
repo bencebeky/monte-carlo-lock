@@ -13,11 +13,12 @@ class RelationshipCache {
   using CombinationPair = std::pair<std::string, std::string>;
   using SetOfPairs = std::set<CombinationPair>;
 
-  bool related(View first, View second) {
-    const related_type bound_related =
-        std::bind(&RelationshipCache::related, this, std::placeholders::_1,
-                  std::placeholders::_2);
+  RelationshipCache()
+      : bound_related_(std::bind(&RelationshipCache::related, this,
+                                 std::placeholders::_1,
+                                 std::placeholders::_2)) {}
 
+  bool related(View first, View second) {
     CombinationPair pair(first.ToString(), second.ToString());
 
     SetOfPairs::iterator related_it = related_cache_.lower_bound(pair);
@@ -30,10 +31,10 @@ class RelationshipCache {
       return false;
     }
 
-    const bool is_related = Q_related(first, second, bound_related) ||
-                            L_related(first, second, bound_related) ||
-                            V_related(first, second, bound_related) ||
-                            R_related(first, second, bound_related);
+    const bool is_related = Q_related(first, second, bound_related_) ||
+                            L_related(first, second, bound_related_) ||
+                            V_related(first, second, bound_related_) ||
+                            R_related(first, second, bound_related_);
 
     if (is_related) {
       related_cache_.insert(related_it, std::move(pair));
@@ -50,6 +51,8 @@ class RelationshipCache {
  private:
   SetOfPairs related_cache_;
   SetOfPairs not_related_cache_;
+
+  const related_type bound_related_;
 };
 
 int main() {
