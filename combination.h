@@ -3,7 +3,7 @@
 #include <array>
 #include <string>
 
-using alphabet_type = std::array<char, 5>;
+using alphabet_type = std::array<char, 4>;
 static constexpr alphabet_type kAlphabet{'Q', 'L', 'V', 'R'};
 
 std::string first_combination(int length);

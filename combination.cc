@@ -4,7 +4,7 @@
 #include <array>
 #include <string>
 
-using alphabet_type = std::array<char, 5>;
+using alphabet_type = std::array<char, 4>;
 
 std::string first_combination(int length) {
   return std::string(length, kAlphabet[0]);
