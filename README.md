@@ -49,9 +49,49 @@ in a map.
 The third implementation, [construct.cc](construct.cc), builds up a set of
 all pairs of combinations that are specially related up to the length limit.
 
-## Comparison of the tree approaches
+## Comparison of the three approaches
 
-TODO runtime, memory usage
+| approach  | runtime |
+| --------- | ------- |
+| recursive | 16.5 s  |
+| memoize   | 125.0 s |
+| construct | 6.0 s   |
+
+The recursive approach is straightforward and fast. Often times with recursion,
+memoization improves runtime. However, the memoized version is much slower in
+this case. Most of the performance penalty comes from copying the string to
+store in the cache. This could be sped up slightly by storing all the strings in
+`main()`, and modifying `RelationshipCache::related()` to take `View` arguments
+and store those in the caches. However, at the end of the run with
+`kMaxLength = 11`, the related cache has only 20 entries, and the not related
+cache has only 76,958,607 entries (compare that to 17,592,186,044,416 possible
+pairs of combinations of 11 character length each drawn from 4 letters). The
+related cache does not receive a single hit, and the not related cache has a hit
+rate of $1.2\cdot10^{-7}$. So no optimization is likely to make memoization
+worth it.
+
+The reason for this is that with the recursive approach, the vast majority of
+`related()` calls return false. For a typical pair of combinations, the
+nested `related()` calls terminate after only a few levels. And the arguments
+are typically different for different starting points. Hence only a very small
+portion of combination space is explored. It must be kept in mind that the
+starting point of these recursions is always a pair of identical combinations, which
+represent a tiny fracion of all possible pairs of combinations.
+
+Note that recursion could potentially be sped up ever so slightly by inlining
+`Q_related()`, `L_related()`, `V_related()` and `R_related()`, only checking if
+the first combination is empty once, and being a little more economical with
+checking its first character. However, there is not a lot of improvment here.
+
+The construct algorithm turns out to be faster than the recursive one. By the
+end of the run it finds a total of 4,288,020 pairs of specially related
+combinations of length at most 11. Even though construction means deeper
+branching that iteration, maybe a firstful of steps from each starting point as
+opposed to very few in the typical case, and construction involves string
+copies, it is still faster, because recursion examines all possible combinations
+up to length 11, while construction only seeds using the Q property over all
+possible combinations up to length 9 (so that even with the Q character
+prepended and appended it fits in the length limit of 11).
 
 ## Alternatives for View
 
