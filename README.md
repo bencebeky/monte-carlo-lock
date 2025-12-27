@@ -51,6 +51,9 @@ all pairs of combinations that are specially related up to the length limit.
 
 ## Comparison of the three approaches
 
+The following table lists runtime with maximum lenght of 11 on an average
+laptop:
+
 | approach  | runtime |
 | --------- | ------- |
 | recursive | 16.5 s  |
@@ -71,17 +74,19 @@ rate of $1.2\cdot10^{-7}$. So no optimization is likely to make memoization
 worth it.
 
 The reason for this is that with the recursive approach, the vast majority of
-`related()` calls return false. For a typical pair of combinations, the
-nested `related()` calls terminate after only a few levels. And the arguments
-are typically different for different starting points. Hence only a very small
-portion of combination space is explored. It must be kept in mind that the
-starting point of these recursions is always a pair of identical combinations, which
-represent a tiny fracion of all possible pairs of combinations.
+`related()` calls return false. For a typical pair of combinations, the nested
+`related()` calls terminate after only the first or second call. Hence only a
+very small portion of combination space is explored. And the arguments are
+typically different for different starting points, resulting in exceedingly low
+cache hit rate. It must be kept in mind that the starting point of these
+recursions is always a pair of identical combinations, which represent a tiny
+fracion of all possible pairs of combinations.
 
 Note that recursion could potentially be sped up ever so slightly by inlining
 `Q_related()`, `L_related()`, `V_related()` and `R_related()`, only checking if
 the first combination is empty once, and being a little more economical with
-checking its first character. However, there is not a lot of improvment here.
+checking its first character. However, there is not a lot of room for
+improvement here.
 
 The construct algorithm turns out to be faster than the recursive one. By the
 end of the run it finds a total of 4,288,020 pairs of specially related
@@ -104,10 +109,12 @@ derived class that saves `begin()` and `end()` (and possibly caches length so as
 not having to call `std::distance` every time) and implements the virtual
 methods of the base class. Then the derived class could be instantiated once
 with `std::string_view::iterator` and once with
-`std::string_view::reverse_iterator` as template argument.
+`std::string_view::reverse_iterator` as template argument, and the `reverse()`
+implementation of each could return an instance of the other class.
 
-`operator==()` between two different types would still need to be implemented
-explicitly.
+`operator==()` between all combinations of the two different types could have a
+templated implementation using iterators, and would need to be explicitly
+instantiated for the four cases.
 
 ## Solutions
 
@@ -151,4 +158,8 @@ are odd integers.
 
 One consequence of these general forms is that although Smullyan states that
 combinations may contain any letter of the alphabet, solutions in fact may only
-consist of characters `Q`, `L`, `V` and `R`.
+consist of characters `Q`, `L`, `V` and `R`. The code in this repository make
+used of this property to slightly reduce the branching factor. Note that even
+with an extra character `X` included in the set of allowed characters, no other
+solutions were found up to length 15, corroborating the statement of the 2016
+paper by Makay.
