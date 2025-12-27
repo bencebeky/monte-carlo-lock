@@ -14,7 +14,9 @@ class RelationshipCache {
   using SetOfPairs = std::set<CombinationPair>;
 
   RelationshipCache()
-      : bound_related_(std::bind(&RelationshipCache::related, this,
+      : related_count_(0), related_cache_hit_count_(0), not_related_count_(0),
+        not_related_cache_hit_count_(0),
+        bound_related_(std::bind(&RelationshipCache::related, this,
                                  std::placeholders::_1,
                                  std::placeholders::_2)) {}
 
@@ -23,11 +25,15 @@ class RelationshipCache {
 
     SetOfPairs::iterator related_it = related_cache_.lower_bound(pair);
     if (related_it != related_cache_.end() && *related_it == pair) {
+      related_count_++;
+      related_cache_hit_count_++;
       return true;
     }
 
     SetOfPairs::iterator not_related_it = not_related_cache_.lower_bound(pair);
     if (not_related_it != not_related_cache_.end() && *not_related_it == pair) {
+      not_related_count_++;
+      not_related_cache_hit_count_++;
       return false;
     }
 
@@ -37,8 +43,10 @@ class RelationshipCache {
                             R_related(first, second, bound_related_);
 
     if (is_related) {
+      related_count_++;
       related_cache_.insert(related_it, std::move(pair));
     } else {
+      not_related_count_++;
       not_related_cache_.insert(not_related_it, std::move(pair));
     }
 
@@ -48,9 +56,21 @@ class RelationshipCache {
   size_t related_cache_size() const { return related_cache_.size(); }
   size_t not_related_cache_size() const { return not_related_cache_.size(); }
 
+  int related_count() const { return related_count_; }
+  int related_cache_hit_count() const { return related_cache_hit_count_; }
+  int not_related_count() const { return not_related_count_; }
+  int not_related_cache_hit_count() const {
+    return not_related_cache_hit_count_;
+  }
+
  private:
   SetOfPairs related_cache_;
   SetOfPairs not_related_cache_;
+
+  int related_count_;
+  int related_cache_hit_count_;
+  int not_related_count_;
+  int not_related_cache_hit_count_;
 
   const related_type bound_related_;
 };
@@ -70,6 +90,14 @@ int main() {
 
   std::cout << "related_cache_size: " << r.related_cache_size() << std::endl;
   std::cout << "not_related_cache_size: " << r.not_related_cache_size()
+            << std::endl;
+  std::cout << "related hit rate: "
+            << static_cast<float>(r.related_cache_hit_count()) /
+                   r.related_count()
+            << std::endl;
+  std::cout << "not_related hit rate: "
+            << static_cast<float>(r.not_related_cache_hit_count()) /
+                   r.not_related_count()
             << std::endl;
 
   return 0;
