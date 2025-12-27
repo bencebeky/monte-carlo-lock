@@ -14,11 +14,10 @@ class RelationshipCalculator {
 
   void Populate() {
     for (int length = 0; length <= kMaxLength_ - 2; length++) {
-      CombinationPair pair{std::string(), first_combination(length)};
+      std::string second = first_combination(length);
       do {
-        pair.first = absl::StrCat("Q", pair.second, "Q");
-        Insert(pair);
-      } while (next_combination(pair.second));
+        Insert(absl::StrCat("Q", second, "Q"), second);
+      } while (next_combination(second));
     }
   }
 
@@ -26,7 +25,8 @@ class RelationshipCalculator {
 
  private:
   // Insert pair and every possible pair derived from it up to length limit.
-  void Insert(CombinationPair pair) {
+  void Insert(std::string first, std::string second) {
+    CombinationPair pair{std::move(first), std::move(second)};
     std::set<CombinationPair>::iterator it = related_set_.lower_bound(pair);
     if (it != related_set_.end() && *it == pair) {
       return;
@@ -37,28 +37,24 @@ class RelationshipCalculator {
       return;
     }
 
-    const std::string second = pair.second;
-    std::string second_reversed{second.rbegin(), second.rend()};
-    CombinationPair new_pair{absl::StrCat("V", pair.first),
-                             std::move(second_reversed)};
+    std::string new_first = absl::StrCat("V", pair.first);
+    const std::string new_second = pair.second;
 
     related_set_.insert(it, std::move(pair));
 
     // V property
-    Insert(new_pair);
+    Insert(new_first, std::string{new_second.rbegin(), new_second.rend()});
 
-    if (second.length() + 1 <= static_cast<size_t>(kMaxLength_)) {
+    if (new_second.length() + 1 <= static_cast<size_t>(kMaxLength_)) {
       // L property
-      new_pair.first[0] = 'L';
-      new_pair.second = absl::StrCat("Q", second);
-      Insert(new_pair);
+      new_first[0] = 'L';
+      Insert(new_first, absl::StrCat("Q", new_second));
     }
 
-    if (2 * second.length() <= static_cast<size_t>(kMaxLength_)) {
+    if (2 * new_second.length() <= static_cast<size_t>(kMaxLength_)) {
       // R property
-      new_pair.first[0] = 'R';
-      new_pair.second = absl::StrCat(second, second);
-      Insert(std::move(new_pair));
+      new_first[0] = 'R';
+      Insert(std::move(new_first), absl::StrCat(new_second, new_second));
     }
   }
 
