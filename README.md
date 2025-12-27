@@ -75,3 +75,43 @@ with `std::string_view::iterator` and once with
 
 `operator==()` between two different types would still need to be implemented
 explicitly.
+
+## Solutions
+
+The shortest combination that is specially related to itself is ten characters
+long. Here are all the combinations up to length 15:
+
+```
+# length 10
+VRLVQVRLVQ
+RVLVQRVLVQ
+
+# length 11
+VLVRQVLVRQQ
+VLRVQVLRVQQ
+
+# length 14
+VVVRLVQVVVRLVQ
+VVRVLVQVVRVLVQ
+VRLVVVQVRLVVVQ
+VRVVLVQVRVVLVQ
+RVLVVVQRVLVVVQ
+RVVVLVQRVVVLVQ
+
+# length 15
+VLVVVRQVLVVVRQQ
+VLVVRVQVLVVRVQQ
+VLVRVVQVLVRVVQQ
+VLRVVVQVLRVVVQQ
+VVVLVRQVVVLVRQQ
+VVVLRVQVVVLRVQQ
+```
+
+Géza Makay presents the general form of all solutions in the 2016 paper [All
+Solutions of the Mystery of the Monte Carlo
+Lock](https://www.researchgate.net/publication/311707847_All_Solutions_of_the_Mystery_of_the_Monte_Carlo_Lock):
+$\texttt{V} ^k \texttt{RV} ^l \texttt{LV} ^m \texttt{QV} ^k \texttt{RV} ^l \texttt{LV} ^m \texttt{Q}$
+and
+$\texttt{V} ^m \texttt{LV} ^k \texttt{RV} ^l \texttt{QV} ^m \texttt{LV} ^k \texttt{RV} ^l \texttt{QQ}$,
+where $k+l$ and $m$
+are odd integers.
