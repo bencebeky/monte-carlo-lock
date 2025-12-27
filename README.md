@@ -29,13 +29,6 @@ is, one that is specially related to itself. This repository contains code to
 find all combinations that are specially related to themselves up to a fixed
 length.
 
-The characters `Q`, `L`, `V`, and `R` have special meaning.  The original
-problem allows any uppercase letter of the English alphabet. To keep the
-branching factor low, we only allow the letter `X` in addition to the special
-ones above, but this could be any character. If a solution contains multiple
-occurrences of `X`, then it has to be investigated separately which ones have to
-be identical characters, which is beyond the scope of the current work.
-
 ## Recursive approach
 
 The first implementation, in [recursive.cc](recursive.cc), goes through all
@@ -115,3 +108,7 @@ and
 $\texttt{V} ^m \texttt{LV} ^k \texttt{RV} ^l \texttt{QV} ^m \texttt{LV} ^k \texttt{RV} ^l \texttt{QQ}$,
 where $k+l$ and $m$
 are odd integers.
+
+One consequence of these general forms is that although Smullyan states that
+combinations may contain any letter of the alphabet, solutions in fact may only
+consist of characters `Q`, `L`, `V` and `R`.
