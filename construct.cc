@@ -56,7 +56,7 @@ class RelationshipCalculator {
   }
 
  private:
-  const int kMaxLength_ = 11;
+  const int kMaxLength_ = 14;
 
   // Pairs of combinations that are known to be specially related.
   std::set<CombinationPair> related_set_;

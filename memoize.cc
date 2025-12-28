@@ -73,7 +73,7 @@ class RelationshipCache {
 };
 
 int main() {
-  constexpr int kMaxLength = 11;
+  constexpr int kMaxLength = 14;
   RelationshipCache r;
 
   for (int length = 1; length <= kMaxLength; length++) {
