@@ -16,6 +16,7 @@ class RelationshipCalculator {
     for (int length = 0; length <= kMaxLength_ - 2; length++) {
       std::string second = first_combination(length);
       do {
+        // Q property
         std::string first = absl::StrCat("Q", second, "Q");
         Insert(first, second);
       } while (next_combination(second));
@@ -52,6 +53,11 @@ class RelationshipCalculator {
     if (2 * second.length() <= static_cast<size_t>(kMaxLength_)) {
       // R property
       Insert(absl::StrCat("R", first), absl::StrCat(second, second));
+    }
+
+    if (first.length() + 2 <= static_cast<size_t>(kMaxLength_)) {
+      // Q property
+      Insert(absl::StrCat("Q", first, "Q"), second);
     }
   }
 
