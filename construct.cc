@@ -36,7 +36,7 @@ class RelationshipCalculator {
 
     related_set_.insert(it, std::move(element));
 
-    if (first.length() + 1 > kMaxLength_) {
+    if (first.length() + 1 > static_cast<size_t>(kMaxLength_)) {
       return;
     }
 
@@ -44,12 +44,12 @@ class RelationshipCalculator {
     std::string second_reversed{second.rbegin(), second.rend()};
     Insert(absl::StrCat("V", first), second_reversed);
 
-    if (second.length() + 1 <= kMaxLength_) {
+    if (second.length() + 1 <= static_cast<size_t>(kMaxLength_)) {
       // L property
       Insert(absl::StrCat("L", first), absl::StrCat("Q", second));
     }
 
-    if (2 * second.length() <= kMaxLength_) {
+    if (2 * second.length() <= static_cast<size_t>(kMaxLength_)) {
       // R property
       Insert(absl::StrCat("R", first), absl::StrCat(second, second));
     }
